@@ -1,0 +1,43 @@
+1 Data Wrangling
+
+#Importing Libraries
+import pandas as pd
+import numpy
+import random
+
+#Reading dataset
+df = pd.read_csv("country_wise_latest.csv")
+df
+
+df.head()
+
+df.tail()
+
+df.isnull()
+
+df.isnull().sum()
+
+df.describe()
+
+df.size
+
+df.shape
+
+df.info()
+
+df.dtypes
+
+df['Deaths']=df['Deaths'].astype('float64')
+df.dtypes
+
+Regionlist = list[df['WHO Region']]
+Regionlist
+
+from sklearn.preprocessing import LabelEncoder
+LE=LabelEncoder()
+label=LE.fit_transform(df['WHO Region'])
+df["Num_to_categorical"]=label
+df
+
+df['WHO Region'].replace({'Africa':0, 'Europe':1, 'Eastern Mediterranean':2}, inplace=True)
+df
