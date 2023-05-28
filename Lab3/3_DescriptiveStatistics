@@ -1,0 +1,30 @@
+3 Descriptive Statistics
+
+import pandas as pd
+import numpy as np
+import statistics as st
+
+iris = pd.read_csv('Iris.csv')
+iris
+
+iris.columns
+
+iris.dtypes
+
+iris.value_counts("Species")
+
+iris.describe()
+
+setosa=iris['Species']=='Iris-setosa'
+iris[setosa].describe()
+
+versicolor=iris['Species']=='Iris-versicolor'
+iris[versicolor].describe()
+
+virginica=iris['Species']=='Iris-virginica'
+iris[virginica].describe()
+
+iris['Species'].replace(['Iris-setosa', 'Iris-virginica','Iris-versicolor'],
+                        [1,2,3], inplace=True)
+iris
+
