@@ -1,0 +1,23 @@
+9 Data Visualization 2
+
+#importing the required libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#command used to load the dataframe
+dataset=sns.load_dataset('titanic')
+dataset.head(10)
+
+# command used to remove the null values
+dataset= dataset.dropna()
+
+#command used for boxplot
+sns.boxplot(x='sex', y='age', data=dataset, hue='survived')
+
+# command used the get the values of age greater than 70
+dataset[dataset['age']>70]
+
+ # cammand used to plot the histogram
+plt.hist(dataset['survived'])
