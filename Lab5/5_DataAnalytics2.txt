@@ -1,0 +1,129 @@
+5 Data Analytics 2
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import warnings
+warnings.filterwarnings('ignore')
+
+ads = pd.read_csv("Social_Network_Ads.csv")
+ads
+
+ads.isnull().sum()
+
+ads.describe()
+
+ads.rename(columns={'Purchased':'Purchased_Status'},inplace=True)
+ads
+
+#for changing Gender categorical to continous/numerical without using library
+#to perform Linear Regression or Logistic Regression the independent variables must be continous
+ads1=ads
+ads1['Gender']=ads1['Gender'].replace({'Male':1,"Female":0})
+ads1
+
+#now using sklearn.preprocessing library
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+ads['Gender']=le.fit_transform(ads['Gender'])
+ads
+
+ads.dtypes
+
+predictors=ads.iloc[:,1:4]   # Considered as X
+predictors
+
+target=ads.iloc[:,4]       #considered as y
+target
+
+#visualize the Data to get insights from the data
+import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+
+sns.distplot(ads['EstimatedSalary'])
+
+sns.scatterplot(x='Age',y='EstimatedSalary',data=ads)
+
+sns.barplot(x='Gender',y='EstimatedSalary',data=ads)
+
+sns.boxplot(x='Gender',y='EstimatedSalary',data=ads)
+
+#Based on this visualizations it seems that there are no outliers in the dataset so we are good to go for preprocessing
+# splitting data into training and testing datasets
+from sklearn.model_selection import train_test_split
+X_train,X_test,y_train,y_test=train_test_split(predictors,target,test_size=0.3,random_state=4)
+print(X_train.shape)
+X_train.head()
+
+print(X_test.shape)
+X_test.head()
+
+print(y_train.shape)
+y_train.head()
+
+print(y_test.shape)
+y_test.head()
+
+# we can standardize the data without using library
+X=X_train
+X=(X-X.mean())/X.std()
+X
+
+Xt=X_test
+Xt=(Xt-Xt.mean())/Xt.std()
+Xt
+
+#library used for Scaling/standardize the Data into Standard format i.e to make data equally scaled in range of 0-1
+from sklearn.preprocessing import StandardScaler
+std=StandardScaler()
+X_train=std.fit_transform(X_train)
+X_test=std.transform(X_test)
+
+X_train[:10]
+
+X_test[:10]
+
+from sklearn.linear_model import LogisticRegression
+classifier=LogisticRegression(solver='liblinear')
+classifier.fit(X_train,y_train)
+y_pred=classifier.predict(X_test)
+
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(y_test,y_pred)
+cm
+
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(y_test,y_pred)
+cm
+
+for i, j in enumerate(np.unique(y_test)):
+    plt.scatter(X_test[y_test == j, 0], X_test[y_test == j, 1],
+                c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('Logistic Regression (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+
+#evaluation of model
+from sklearn.metrics import mean_absolute_error 
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import r2_score
+mae=mean_absolute_error(y_true=y_test,y_pred=y_pred)
+print(f"mean absolute error: {mae}")
+mse=mean_squared_error(y_true=y_test,y_pred=y_pred)
+print(f"mean Squared error: {mse}")
+r2=r2_score(y_true=y_test,y_pred=y_pred)
+print(f"mean Squared error: {mse}")
+accuracy=accuracy_score(y_true=y_test,y_pred=y_pred)
+print(f"Accuracy: {accuracy}")
+
+#predicting the Purchased status with individual value or we can add new values to the array
+y_pred2=classifier.predict(X_test[6].reshape(1,3))[0]
+y_pred2
+
+#prediction with new value
+y_pred3=classifier.predict(pd.array([1.00564565,  0.84544845,  0.45615848]).reshape(1,3))
+y_pred3
