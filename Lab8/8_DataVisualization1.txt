@@ -1,0 +1,28 @@
+8 Data Visualization 1
+
+#importing the required library
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#loading the dataframe
+dataset=sns.load_dataset('titanic')
+dataset.head(10)
+
+#The distplot() shows the histogram distribution of data for a single column.
+sns.distplot(dataset['fare'])
+
+#The jointplot()is used to display the mutual distribution of each column
+sns.jointplot(x='age',y='survived',data=dataset)
+
+sns.barplot(x='sex',y='age',data=dataset)
+
+#The count plot is similar to the bar plot, however it displays the 
+#count of the categories in a specific column.
+sns.countplot(x='sex',data=dataset)
+
+#The violin plot is similar to the box plot, however, the violin plot allows
+# us to display all the components that actually correspond to the data point.
+sns.violinplot(x='sex',y='age',data=dataset)
+
