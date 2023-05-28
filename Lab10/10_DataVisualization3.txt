@@ -1,0 +1,47 @@
+10 Data Visualization 3
+
+#importing the libraries required
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#Reading the dataframe
+iris = pd.read_csv("Iris.csv")
+iris
+
+iris.info()
+
+iris.describe()
+
+#The only reason %matplotlib inline is used is to render 
+#any matplotlib diagrams even if the plt. show() function is not called.
+%matplotlib inline
+
+
+fig,axes=plt.subplots(2,2,figsize=(16,8))
+axes[0,0].set_title("DIst of first column")
+axes[0,0].hist(iris['SepalLengthCm'])
+axes[0,1].set_title("DIst of second column")
+axes[0,1].hist(iris['SepalWidthCm'])
+axes[1,0].set_title("DIst of third column")
+axes[1,0].hist(iris['PetalLengthCm'])
+axes[1,1].set_title("DIst of fourth column")
+axes[1,1].hist(iris['PetalLengthCm'])
+
+#command used for box plot
+sns.boxplot(x='SepalLengthCm', y='Species', data=iris)
+
+sns.boxplot(x='SepalWidthCm',y='Species',data=iris)
+
+sns.boxplot(x='PetalLengthCm',y='Species',data=iris)
+
+sns.boxplot(x='PetalWidthCm',y='Species',data=iris)
+
+#A kernel density estimate (KDE) plot is a method for visualizing the 
+#distribution of observations in a dataset, analogous to a histogram.
+#KDE represents the data using a continuous probability
+#density curve in one or more dimensions.
+#the bins parameter enables you to control the 
+#bins of the histogram (i.e., the number of bars).
+sns.distplot(iris['PetalLengthCm'],bins=10,kde=False)
