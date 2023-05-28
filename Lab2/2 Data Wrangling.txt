@@ -1,0 +1,119 @@
+2 Data Wrangling
+
+import pandas as pd
+import numpy as np
+import random 
+import statistics
+
+sdf = pd.read_csv("StudentsPerformance.csv")
+sdf
+
+sdf.info()
+
+sdf.isnull().sum()
+
+sdf.shape
+
+sdf.size
+
+sdf.columns
+
+sdf.head(10)
+
+sdf["math score"] = sdf['math score'].replace(np.NaN,sdf['math score'].mean())  #replacing nan value with mean
+sdf['math score'].head()
+
+sdf['reading score'].head(50)
+
+sdf['reading score'] = sdf['reading score'].replace(np.NaN,sdf['reading score'].median())
+sdf['reading score'].head(50)
+
+sdf['writing score'].head(50)
+
+sdf['writing score']=sdf['writing score'].replace(np.NaN,statistics.mode(sdf['writing score']))
+sdf['writing score'].head(50)
+
+#using Drop na
+df1=pd.read_csv("StudentsPerformance.csv")
+df1
+
+df1.isnull().sum()
+
+df1.dropna(inplace=True)
+
+df1  #dropped the whole row having null value
+
+#using fillna
+df2=pd.read_csv('StudentsPerformance.csv')
+df2.head()
+
+df2['math score']=df2['math score'].fillna(0)
+df2.isnull().sum()
+
+df2['reading score']=df2['reading score'].fillna(method='ffill')
+df2['reading score']
+
+df2.isnull().sum()
+
+df2['reading score']=df2['reading score'].interpolate(method='linear',limit_direction='forward',axis=0)
+df2['reading score'].head()
+
+sdf
+
+sdf['gender']=np.where(sdf['gender']=='female',0,1)
+sdf['gender']
+
+sdf
+
+#Normalizing the data
+sdf = sdf.drop(['race/ethnicity', 'parental level of education','lunch', 'test preparation course'],axis=1)
+sdf
+
+#Scaling
+from sklearn.preprocessing import MinMaxScaler
+scaler=MinMaxScaler(feature_range=(0,1))
+sdf = pd.DataFrame(scaler.fit_transform(sdf), columns=sdf.columns)
+sdf
+
+#using boxplot
+cols=['math score','reading score','writing score']
+sdf.boxplot(cols)
+
+sdf2 = pd.read_csv('StudentsPerformance.csv')
+sdf2 = sdf2.drop(['race/ethnicity', 'parental level of education','lunch', 'test preparation course'],axis=1)
+sdf2
+
+sdf2[sdf2['math score']<20]
+
+sdf2[sdf2['reading score']<20]
+
+sdf2[sdf2['writing score']<20]
+
+#importing matplotlib
+import matplotlib.pyplot as plt
+#using scatterplot 
+scat=plt.subplot()
+scat.scatter(sdf['reading score'],sdf['writing score'])
+plt.show()
+
+scat.set_xlabel('reading score')
+scat.set_ylabel('Writing score')
+plt.show()
+
+np.where((sdf2['reading score']<20)&(sdf2['writing score']>1))
+
+import scipy
+from scipy import stats
+
+z=np.abs(stats.zscore(sdf['math score']))
+z
+
+threshhold=0.00001
+#display outliers
+sample_outliers=np.where(z<threshhold)
+sample_outliers
+
+sdf2['math score'].plot(kind='hist')
+
+sdf2['logmath']=np.log10(sdf2['math score'])
+sdf2
