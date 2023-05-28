@@ -1,0 +1,44 @@
+6 Data Analytics 3
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+dataset = pd.read_csv('https://raw.githubusercontent.com/mk-gurucharan/Classification/master/IrisDataset.csv')
+X = dataset.iloc[:,:4].values
+y = dataset['species'].values
+dataset.head(5)
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
+
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+from sklearn.naive_bayes import GaussianNB
+classifier = GaussianNB()
+classifier.fit(X_train, y_train)
+
+y_pred = classifier.predict(X_test) 
+y_pred
+
+df = pd.DataFrame({'Real Values':y_test, 'Predicted Values':y_pred})
+df
+
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+print('Confusion matrix\n\n', cm)
+print('\nTrue Positives(TP) = ', cm[0,0])
+print('\nTrue Negatives(TN) = ', cm[1,1])
+print('\nFalse Positives(FP) = ', cm[0,1])
+print('\nFalse Negatives(FN) = ', cm[1,0])
+print('\nAccuracy =',((cm[0,0]+cm[1,1])/(cm[0,1]+cm[1,0]+cm[0,0]+cm[1,1])))
+
+#Accuracy = (TP+TN)/(TP+TN+FP+FN))
+#Precision = TP/(TP+FP))
+#Recall = TP/(TP+FN))
+print("The Accuracy is ", (cm[0,0]+cm[1,1])/(cm[0,0]+cm[1,1]+cm[0,1]+cm[1,0]))
+print("The precision is ", cm[0,0]/(cm[0,0]+cm[0,1]))
+print("The recall is ", cm[0,0]/(cm[0,0]+cm[1,0]))
