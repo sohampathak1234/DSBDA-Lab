@@ -1,0 +1,81 @@
+7 Text Analysis
+
+import nltk
+from nltk import word_tokenize
+from nltk import sent_tokenize
+nltk.download('punkt')
+
+import pandas as pd
+import numpy as np
+
+data = pd.read_csv("twitter_parsed_dataset.csv")
+data
+
+data.columns
+
+data.Text
+
+texts=[]
+for t in data['Text'][0:10]:
+  texts.append(t)
+texts
+
+tokenized_word=word_tokenize(texts[1])
+print(tokenized_word)
+
+tokenized_sent=sent_tokenize(texts[1])
+tokenized_sent
+
+nltk.download('stopwords')
+
+from nltk.corpus import stopwords
+stopwords=stopwords.words('english')
+for i in tokenized_word:
+  if i not in stopwords:
+    print(i)
+
+print(stopwords)
+
+from nltk.stem import PorterStemmer
+ps=PorterStemmer()
+for i in tokenized_word:
+  print(ps.stem(i))
+
+freqdist=nltk.FreqDist(tokenized_word)
+for i,j in freqdist.items():
+  print(f'{i}-----{j}')
+
+#extarct pair of connected words
+#bigrams
+#trigrams
+#Ngrams
+print(list(nltk.bigrams(tokenized_word)))
+print(list(nltk.trigrams(tokenized_word)))
+print(list(nltk.ngrams(tokenized_word,4)))
+
+nltk.download('wordnet')
+
+import nltk
+nltk.download('omw-1.4')
+
+from nltk.stem import WordNetLemmatizer
+lem=WordNetLemmatizer()
+for w in tokenized_word:
+  print(lem.lemmatize(w,pos='v'))
+
+nltk.download('averaged_perceptron_tagger')
+
+from nltk.tag.perceptron import AveragedPerceptron
+print(nltk.pos_tag(tokenized_word))
+
+
+##Error
+n_docs=len(corpus)
+n_words_set=len(words_set)
+df_tf=pd.DataFrame(np.zeros((n_docs,n_words_set)),columns=words_set)
+for i in range(n_docs):
+  words=corpus[i].split(' ')
+  for w in words:
+    df_tf[w][i]+(1/len(words))
+df_tf
+##Error
